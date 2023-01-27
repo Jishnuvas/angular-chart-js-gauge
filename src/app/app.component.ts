@@ -29,46 +29,48 @@ export class AppComponent implements AfterViewInit {
 
         const cy = chartArea.bottom - chartArea.top;
 
-        ctx.translate(cx, cy);
+        ctx.translate(cx, cy-10);
         ctx.rotate(angle);
         ctx.beginPath();
         ctx.moveTo(0, -3);
-        ctx.lineTo(cy - ctx.canvas.offsetTop - 50, 0);
+        ctx.lineTo(cy - ctx.canvas.offsetTop-10, 0);
         ctx.lineTo(0, 3);
         ctx.fillStyle = 'black';
         ctx.fill();
         ctx.restore();
 
         ctx.beginPath();
-        ctx.arc(cx, cy, 5, 0, 10);
+        ctx.arc(cx, cy-10, 5, 0, 10);
         ctx.fillStyle = 'black';
         ctx.fill();
         ctx.restore();
+
       }
     },
   };
+
+  data: any = {
+    datasets: [
+      {
+        data: [100 / 3, 100 / 3, 100 / 3],
+        backgroundColor: ['red', 'yellow', 'green'],
+        borderWidth: 1,
+        needleValue: 25,
+      },
+    ],
+  };
   ngAfterViewInit() {
     console.log('create');
-    this.chart?.destroy();
-    Chart.plugins.register(this.gauge);
-    this.chart = new Chart(this.myChart?.nativeElement, {
+    Chart.register(this.gauge);
+    const chart = new Chart(this.myChart?.nativeElement, {
       type: 'doughnut',
-      data: {
-        datasets: [
-          {
-            data: [100 / 3, 100 / 3, 100 / 3],
-            backgroundColor: ['red', 'yellow', 'green'],
-            borderWidth: 1,
-            needleValue: 25,
-          },
-        ],
-      },
+      data: this.data,
       options: {
-        cutout: '50%',
+        cutout: '80%',
         responsive: true,
         maintainAspectRatio: false,
-        circumference: Math.PI,
-        rotation: Math.PI,
+        circumference: -180,
+        rotation: 270,
         plugins: {
           legend: {
             display: false,
