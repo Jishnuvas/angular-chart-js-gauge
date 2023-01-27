@@ -16,7 +16,6 @@ export class AppComponent implements AfterViewInit {
     id: 'custom',
     afterDatasetDraw: (chart: any, arg: any, options: any) => {
       const { ctx, config, data, chartArea } = chart;
-      console.log(chart);
       if (config.type === 'doughnut') {
         const dataTotal = data.datasets[0]?.data?.reduce(
           (a: any, b: any) => a + b,
@@ -29,22 +28,27 @@ export class AppComponent implements AfterViewInit {
 
         const cy = chartArea.bottom - chartArea.top;
 
-        ctx.translate(cx, cy-10);
+        ctx.translate(cx, cy - 25);
         ctx.rotate(angle);
         ctx.beginPath();
         ctx.moveTo(0, -3);
-        ctx.lineTo(cy - ctx.canvas.offsetTop-10, 0);
+        ctx.lineTo(cy - ctx.canvas.offsetTop - 25, 0);
         ctx.lineTo(0, 3);
         ctx.fillStyle = 'black';
         ctx.fill();
         ctx.restore();
 
         ctx.beginPath();
-        ctx.arc(cx, cy-10, 5, 0, 10);
+        ctx.arc(cx, cy - 25, 5, 0, 10);
         ctx.fillStyle = 'black';
         ctx.fill();
         ctx.restore();
 
+        ctx.font = '20px Helvetica';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = ' center';
+        ctx.fillText(`${needleValue}%`, cx - 12.5, cy);
+        ctx.restore();
       }
     },
   };
